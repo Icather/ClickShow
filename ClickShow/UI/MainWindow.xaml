@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ClickShow"
+    xmlns:l="clr-namespace:ClickShow"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Name="TheWindow"
@@ -32,26 +33,26 @@
                 Margin="5"
                 VerticalContentAlignment="Center"
                 Click="ChkStartWithWindows_OnClick"
-                Content="开机自动启动(_S)"
-                ToolTip="是否开机自动启动" />
+                Content="{x:Static l:Strings.AutoStart}"
+                ToolTip="{x:Static l:Strings.AutoStartToolTip}" />
 
             <StackPanel Name="PnlSettings" DataContext="{Binding ElementName=TheWindow, Path=AppSetting}">
                 <CheckBox
                     Name="ChkEnableClickCircle"
                     Margin="5"
                     VerticalContentAlignment="Center"
-                    Content="显示点击特效(_C)"
+                    Content="{x:Static l:Strings.EnableClickCircle}"
                     IsChecked="{Binding Path=EnableClickCircle}"
-                    ToolTip="点击时显示波纹特效" />
+                    ToolTip="{x:Static l:Strings.ClickCircleToolTip}" />
 
 
                 <CheckBox
                     Name="ChkEnableHoverDot"
                     Margin="5"
                     VerticalContentAlignment="Center"
-                    Content="显示位置提示浮标(_F)"
+                    Content="{x:Static l:Strings.EnableHoverDot}"
                     IsChecked="{Binding Path=EnableHoverDot}"
-                    ToolTip="在鼠标指针周围显示原点，跟随鼠标移动" />
+                    ToolTip="{x:Static l:Strings.HoverDotToolTip}" />
 
 
             </StackPanel>
@@ -60,9 +61,9 @@
         </StackPanel>
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
             <TextBlock Margin="10" HorizontalAlignment="Center">
-                <Hyperlink NavigateUri="https://github.com/cuiliang/clickshow" RequestNavigate="HyperlinkOpenHomepage_OnRequestNavigate">反馈与更新 / Homepage</Hyperlink>                
+                <Hyperlink NavigateUri="https://github.com/cuiliang/clickshow" RequestNavigate="HyperlinkOpenHomepage_OnRequestNavigate"><TextBlock Text="{x:Static l:Strings.FeedbackLink}"/></Hyperlink>                
                 <LineBreak></LineBreak>
-                <TextBlock Name="LblNewVersion" Foreground="OrangeRed" FontWeight="Bold" Visibility="Collapsed" Text="已有新版本!"/>
+                <TextBlock Name="LblNewVersion" Foreground="OrangeRed" FontWeight="Bold" Visibility="Collapsed" Text="{x:Static l:Strings.NewVersionAvailable}"/>
             </TextBlock>
             
 
@@ -76,7 +77,7 @@
                     Margin="5"
                     Padding="10,7"
                     Click="BtnSettings_OnClick"
-                    Content="更多设置(_S)..." />
+                    Content="{x:Static l:Strings.MoreSettings}" />
 
                 <Button
                     Name="BtnClose"
@@ -84,7 +85,7 @@
                     Margin="5"
                     Padding="10,7"
                     Click="BtnClose_OnClick"
-                    Content="退出(_X)" />
+                    Content="{x:Static l:Strings.Exit}" />
             </Grid>
 
 

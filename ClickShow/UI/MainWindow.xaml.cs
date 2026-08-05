@@ -157,7 +157,7 @@ namespace ClickShow
                         AppSetting.LastNotifiedVersion = versionStr;
                         SaveSettings();
 
-                        if (MessageBox.Show($"ClickShow有新版本（{versionStr}），是否立即打开网页？", "ClickShow", MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
+                        if (MessageBox.Show(string.Format(Strings.NewVersionPrompt, versionStr), "ClickShow", MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
                         {
                             return;
                         }
@@ -167,7 +167,7 @@ namespace ClickShow
                         }
                         catch
                         {
-                            MessageBox.Show($"无法打开网址：{updateUrl}");
+                            MessageBox.Show(string.Format(Strings.CannotOpenUrl, updateUrl));
                         }
                     }
                 }
@@ -238,7 +238,7 @@ namespace ClickShow
             }
             catch
             {
-                MessageBox.Show("无法打开网址：https://github.com/cuiliang/clickshow");
+                MessageBox.Show(string.Format(Strings.CannotOpenUrl, "https://github.com/cuiliang/clickshow"));
             }
         }
 
@@ -490,12 +490,12 @@ namespace ClickShow
                 _notifyIcon.Icon = new System.Drawing.Icon(iconStream);
             }
 
-            _notifyIcon.BalloonTipText = "ClickShow\n鼠标点击提示器\n点击打开";
+            _notifyIcon.BalloonTipText = Strings.TrayBalloonTip;
             _notifyIcon.Click += NotifyIconOnClick;
             _notifyIcon.Visible = true;
 
             var contextMenu = new System.Windows.Forms.ContextMenu();
-            var menuItem = new System.Windows.Forms.MenuItem("退出(Exit)", (sender, args) =>
+            var menuItem = new System.Windows.Forms.MenuItem(Strings.TrayExit, (sender, args) =>
             {
                 _forceClose = true;
                 this.Close();
@@ -539,7 +539,7 @@ namespace ClickShow
             }
             catch (Exception ex)
             {
-                MessageBox.Show("无法加载开机自动启动状态。" + ex.Message);
+                MessageBox.Show(Strings.AutoStartLoadError + ex.Message);
             }
         }
 
@@ -561,7 +561,7 @@ namespace ClickShow
             }
             catch (Exception ex)
             {
-                MessageBox.Show("无法保存开机自动启动状态。" + ex.Message);
+                MessageBox.Show(Strings.AutoStartSaveError + ex.Message);
             }
 
         }
@@ -627,7 +627,7 @@ namespace ClickShow
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("配置文件损坏了，设置已恢复为默认值。" + ex.Message);
+                    MessageBox.Show(Strings.CorruptSettings + ex.Message);
                     AppSetting = new AppSetting();
 
                     SaveSettings();
@@ -694,7 +694,7 @@ namespace ClickShow
             catch (Exception ex)
             {
 
-                _notifyIcon.ShowBalloonTip(2000,"ClickShow", "应用设置出错，已重置设置。错误：" + ex.Message, ToolTipIcon.Warning);
+                _notifyIcon.ShowBalloonTip(2000,"ClickShow", Strings.ApplySettingsError + ex.Message, ToolTipIcon.Warning);
 
                 //如果遇到了问题，重置设置
                 AppSetting = new AppSetting();
@@ -717,7 +717,7 @@ namespace ClickShow
             }
             catch (Exception ex)
             {
-                _notifyIcon.ShowBalloonTip(2000, "ClickShow", "设置保存出错：" + ex.Message, ToolTipIcon.Warning);
+                _notifyIcon.ShowBalloonTip(2000, "ClickShow", Strings.SaveSettingsError + ex.Message, ToolTipIcon.Warning);
             }
             
         }
