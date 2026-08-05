@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -29,6 +30,33 @@ namespace ClickShow.UI
             InitializeComponent();
 
             this.DataContext = appSetting;
+
+            // Force software rendering once the window handle is created to avoid
+            // WPF render-thread failures on Windows 11 24H2/25H2.
+            SourceInitialized += (s, e) => ForceSoftwareRendering();
+        }
+
+        /// <summary>
+        /// Force software rendering for this window only.
+        /// Workaround for WPF render-thread failures (UCEERR_RENDERTHREADFAILURE)
+        /// seen on Windows 11 24H2/25H2 with hardware-accelerated rendering.
+        /// https://learn.microsoft.com/troubleshoot/developer/dotnet/framework/general/wpf-render-thread-failures
+        /// </summary>
+        private void ForceSoftwareRendering()
+        {
+            try
+            {
+                var hwnd = new WindowInteropHelper(this).Handle;
+                var source = HwndSource.FromHwnd(hwnd);
+                if (source != null)
+                {
+                    source.CompositionTarget.RenderMode = RenderMode.SoftwareOnly;
+                }
+            }
+            catch
+            {
+                // Best-effort workaround; ignore failures.
+            }
         }
 
         
