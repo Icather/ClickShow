@@ -1,69 +1,114 @@
+<div align="center">
+
 # ClickShow
-用于提示鼠标点击、鼠标位置。
 
-**特色功能**
-- 鼠标点击时显示波纹特效，每个按键对应不同的颜色；
-- 支持跟随鼠标的位置指示圆标；
-- 支持多屏DPI感知；
-- 支持开机自启动；
+**Ultra-lightweight Windows mouse click indicator**
 
+A single **~400KB** exe, portable, tray-resident. Click ripple + cursor dot, DPI aware, i18n (zh/en).
 
-下载地址：https://github.com/cuiliang/ClickShow/releases
+[English](README.md) · [中文](README.zh-CN.md)
 
-图标来源：https://www.iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.dc64b3430&cid=13315
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white)](https://github.com/Icather/ClickShow)
+[![Language](https://img.shields.io/badge/C%23-WPF-512BD4?logo=csharp&logoColor=white)](https://github.com/Icather/ClickShow)
+[![Size](https://img.shields.io/badge/Size-%7E400KB-06b6d4)](https://github.com/Icather/ClickShow)
+[![License](https://img.shields.io/badge/License-MIT%20(fork%20code)-22c55e)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Icather/ClickShow?color=blue)](https://github.com/Icather/ClickShow/releases/latest)
 
+### 📥 Download
+
+[![GitHub Release](https://img.shields.io/badge/GitHub%20Release-%E4%B8%8B%E8%BD%BD-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Icather/ClickShow/releases/latest)
+[![Lanzou](https://img.shields.io/badge/Lanzou-%E4%B8%8B%E8%BD%BD-2E7CF6?style=for-the-badge)](https://wwawp.lanzouu.com/iOP7140pa8ud)
+[![123Pan](https://img.shields.io/badge/123Pan-%E4%B8%8B%E8%BD%BD-FF4A1E?style=for-the-badge)](https://1821431120.share.123pan.cn/123pan/aGWpjv-JXapd)
+
+> Unzip and run `ClickShow.exe`, no install needed.
+> Chinese users: prefer the Lanzou / 123Pan mirrors; GitHub users can grab the Release.
+
+</div>
+
+> **Maintenance note (2026-08)**
+>
+> This is a maintenance fork. Upstream [cuiliang/ClickShow](https://github.com/cuiliang/ClickShow) is archived and no longer maintained. This fork fixes the settings-window freeze on Windows 11 24H2/25H2. If upstream ever un-archives and accepts a PR, this fork will update the README to add a link pointing back to the upstream repo.
+
+---
+
+## Branches
+
+| Branch | Purpose |
+|:--|:--|
+| `main` | **Maintenance line (recommended)** — fix + i18n + v1.4.2.0, used for daily use and releases. |
+| `fix-settings-freeze` | **Upstream PR candidate** — single-commit fix (Option B software rendering) kept clean for a potential PR if upstream ever un-archives. |
+
+## Fix for Windows 11 24H2/25H2
+
+**Problem**: Opening the Settings window ("更多设置") hangs the app (window appears but unresponsive).
+
+**Root cause**: It is a WPF render-thread failure (`UCEERR_RENDERTHREADFAILURE`). The upstream 1.4.1 release was built with `ReleaseElevated` (`uiAccess="true"`, added for showing effects above elevated windows, see upstream [#43](https://github.com/cuiliang/ClickShow/issues/43)), which triggers the Microsoft-confirmed WPF render-thread hang on Win11 24H2/25H2 (after KB5072033). See [WPF Render Thread Failures – .NET Framework](https://learn.microsoft.com/troubleshoot/developer/dotnet/framework/general/wpf-render-thread-failures).
+
+**Fix**:
+- Manifest `uiAccess="false"` (quick workaround, Option A).
+- Software rendering forced for the settings window only (Option B, the workaround Microsoft recommends; animation windows keep hardware rendering).
+
+## Features
+
+| Feature | Description |
+|:--|:--|
+| **Ultra-lightweight** | Single ~400KB exe, portable, tray-resident |
+| **Click ripple** | Ripple on mouse click, distinct color per button |
+| **Cursor dot** | Indicator dot that follows the mouse |
+| **DPI aware** | Multi-monitor DPI aware |
+| **Auto-start** | Optional auto-start with Windows |
+| **i18n** | UI follows system language (zh-CN / English) |
+
+## Usage
+
+- Requirements: Windows 7 SP1+, .NET Framework 4.7.2 (built into Win10+).
+- To show effects above elevated windows (Task Manager, Start menu, admin apps), place the exe in `C:\Windows` or `C:\Program Files` — it will auto-elevate (1.3.1+).
+- Minimizes to the system tray on start.
+- Clicking X hides to tray.
+- Left-click tray icon opens the main window, right-click opens the menu.
 
 ![test](https://user-images.githubusercontent.com/1972649/122925974-f17ead00-d399-11eb-9c57-9b2f14dd5973.gif)
 
-
-
-# 使用
-- 系统需求：Windows7 sp1+, .Net 4.7.2 版本（win10自带）
-- 如需在任务管理器、开始菜单、以管理员身份启动的窗口上生效，请将程序(1.3.1+版本)放到 `C:\Windows` 或 `C:\Program Files` 目录下使用。这时候程序会自动提升权限。
-- 程序启动后自动缩小到系统托盘。
-- 点击X最小化到系统托盘。
-- 点击托盘图标打开主窗口，右键点击托盘图标打开菜单。
-
-
 ![image](https://user-images.githubusercontent.com/1972649/129450207-45174d8b-89ad-489c-876b-a2bc657e5417.png)
 
+## Changelog
 
+### 1.4.2 (2026-08, this fork)
+- i18n: UI follows system language (zh-CN / English).
+- Version bumped to 1.4.2.0.
 
-
-## 更新历史
+### 1.4.1-fix1 (2026-08, this fork)
+- Fix settings-window freeze on Windows 11 24H2/25H2.
+- Software rendering for settings window + manifest `uiAccess="false"`.
 
 ### 1.4.1
-- 修复鼠标穿透问题。
-- 启动后检查版本更新。
+- Fix mouse-passthrough issue.
+- Check for updates on start.
 
 ### 1.4.0
-- 增加参数设置与自动保存。感谢 @BigDevil82 贡献代码。
+- Added settings and auto-save. Thanks @BigDevil82.
 
 ### 1.3.3
-- 按下时的波纹效果避开中心一点。
+- Ripple avoids the exact center on press.
 
 ### 1.3.2
-- 长按鼠标抬起时，或者鼠标移动了较远距离抬起时，显示小波纹提示抬起事件。
+- Shows a small ripple on release after long press or long move.
 
 ### 1.3.1
-- 避免某些情况下显示到别的窗口下面的问题。
+- Avoid rendering below other windows in some cases.
 
 ### 1.3
-- 解决Win7下不生效的问题
-- 支持多屏Dpi感知
-- 支持随Windows自动启动
-- 换了一个蓝色的图标（导致程序变大了，现在210k）
+- Fix not working on Win7.
+- Multi-monitor DPI awareness.
+- Auto-start with Windows.
+- New blue icon.
 
-## 可能会遇到的问题
-- 特效丢失：鼠标挂钩丢失了，这时候需要重启一下程序。
-- 自启动不生效：被各类管家或启动软件拦截，请在这些软件里设置。
+## Troubleshooting
 
-   
+- Effects missing: the mouse hook was lost, restart the app.
+- Auto-start blocked by third-party managers, enable it there.
 
-# 广告位😎
-- 欢迎使用本人开发的其它软件：[Quicker - PC上的快捷指令](https://getquicker.net/)。
+## Credits
 
-
-谢谢~
-
-
+- Original (archived) upstream [cuiliang/ClickShow](https://github.com/cuiliang/ClickShow), thanks to the author.
+- Icon source: https://www.iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.dc64b3430&cid=13315

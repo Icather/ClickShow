@@ -1,6 +1,15 @@
 MIT License
 
-Copyright (c) 2021 CuiLiang
+Copyright (c) 2026 Icather
+
+本许可证仅适用于本 fork 中由 Icather 新增或修改的代码（包括但不限于
+Localization.cs、SettingsWindow.xaml.cs 中的渲染修复、i18n 相关改动）。
+上游原始代码版权归原作者 cuiliang 所有，未随本许可证授权。
+
+This license applies only to code added or modified by Icather in this fork
+(including but not limited to Localization.cs, the rendering fix in
+SettingsWindow.xaml.cs, and i18n changes). Upstream code remains the copyright
+of the original author (cuiliang) and is not covered by this license.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
